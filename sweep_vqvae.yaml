@@ -1,0 +1,10 @@
+program: sweep_runner.py
+method: bayes
+metric: {name: val/total_loss, goal: minimize}
+parameters:
+  base_config: {value: /content/drive/MyDrive/Diffusion_Dose_Colab/Diffusion_Dose/config/dose_cond.yaml}
+  autoencoder_lr: {values: [1e-3, 5e-4, 1e-4, 5e-5]}
+  autoencoder_batch_size: {values: [2, 4, 8]}
+  commitment_beta: {values: [0.1, 0.2, 0.3, 0.4]}
+  perceptual_weight: {values: [0.0, 0.5, 1.0]}
+  autoencoder_epochs: {value: 100}

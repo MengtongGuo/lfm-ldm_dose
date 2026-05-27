@@ -1,0 +1,143 @@
+dataset_params:
+  #im_path: '/mnt/md0/mguo_data/Dose_Simulation/simulations_small'
+  im_path: '/mnt/md0/mguo_data/Dose_Simulation/simulations'
+  im_channels : 1
+  im_size : 100
+  name: 'dose'
+  target_dim: 128
+  downsample_factor: 2   
+
+
+diffusion_params:
+  num_timesteps : 100
+  beta_start : 0.0003
+  beta_end : 0.005
+  sigma_min: 0.002
+  sigma_max: 160 # 50
+  sigma_data: 0.5
+  rho: 7.0
+  weight_schedule: "karras"
+  loss_norm: "l2"
+
+ldm_params:
+  dim_type: '3d'
+  down_channels: [128, 128]
+  mid_channels: [128, 128]
+  down_sample: [True, False]
+  attn_down : [True, True]
+  time_emb_dim: 256
+  norm_channels : 32
+  image_size: 32
+  num_heads : 16
+  conv_out_channels : 128
+  cond_factor: 1.0
+  num_down_layers: 1
+  num_mid_layers: 2
+  num_up_layers: 1
+  dropout_rate: 0.0
+  image_condition_model_start_filters: 16
+  ct_encoder_layers: 5
+  condition_config:
+    use_ct_condition: true
+    use_energy_condition: true
+    cond_drop_prob: 0.1
+
+fm_params:
+  num_steps: 100
+  ode_solver: euler
+
+discriminator_params:
+  image_channels : 1
+  embedding_dim : 128
+  num_blocks : 5
+  initial_features : 128
+  discriminator_loss_upper_bound : 0.15
+  smoothing_max_kernel: 7
+  smoothing_min_kernel: 1
+  smoothing_decay: 0.98
+
+autoencoder_params:
+  z_channels: 1
+  codebook_size : 20
+  down_channels : [8, 16, 32]
+  mid_channels : [32]
+  down_sample : [True, True]
+  attn_down : [False, False]
+  norm_channels: 8
+  num_heads: 8
+  num_down_layers : 3
+  num_mid_layers : 1
+  num_up_layers : 3
+  use_condition: False
+
+consistency_params:
+  num_scales: 25
+  sigma_min: 0.002
+  sigma_max: 160 # 50
+  rho: 7.0
+  noise_schedule: "cosine"
+  beta_end_smooth_factor: 0.8
+  dropout_rate: 0.1
+  norm_type: "layer_norm"
+  attention_dropout_rate: 0.1
+  spectral_norm: True
+  layer_norm: True
+  max_disc_loss_bound: 0.15
+  ae_dropout_rate: 0.1
+  ae_norm_type: "batch_norm"
+  patience: 10
+  seed: 1111
+  warmup_steps: 500
+  kl_weight: 0.00001
+  disc_lr_reduction_factor: 0.1
+  consistency_logging_interval: 10
+  ema_decay: 0.97
+  weight_decay: 0.01
+  weight_schedule: "truncated-snr"
+  loss_norm: "l2"
+
+train_params:
+  seed : 1111
+  task_name: 'dose'
+  log_dir: "logs"
+  experiment_name: "diffusion_gan"
+  checkpoint_dir: "checkpoints"
+  patience: 10
+  num_workers: 16
+  ldm_batch_size: 16
+  disc_batch_size: 16
+  autoencoder_batch_size: 16
+  consistency_batch_size: 16
+  fm_batch_size: 16
+  disc_start: 1000
+  disc_weight: 0.5
+  codebook_weight: 1
+  commitment_beta: 0.2
+  perceptual_weight: 1
+  discriminator_weight: 0.001
+  consistency_weight: 0.5
+  kl_weight: 0.000005
+  ldm_epochs : 400
+  disc_epochs: 100
+  autoencoder_epochs : 300
+  consistency_epochs: 500
+  fm_epochs: 500
+  num_samples : 1
+  num_grid_rows : 5
+  ldm_lr: 0.0001
+  fm_lr: 0.0001
+  disc_lr: 0.001
+  consistency_lr: 0.0005
+  lambda_gan: 1.0
+  autoencoder_lr: 0.0005
+  autoencoder_acc_steps : 1
+  autoencoder_img_save_steps : 8
+  save_latents : False
+  cf_guidance_scale : 1.0
+  vae_latent_dir_name : 'vae_latents'
+  vqvae_latent_dir_name : 'vqvae_latents'
+  consistency_ckpt_cond_name: './checkpoints/consistency_model/best_model_10_03_2025-20-50.ckpt'
+  gan_ckpt_cond_name: './checkpoints/gan_ldm/last.ckpt'
+  ldm_ckpt_cond_name: './checkpoints/ldm/best_model_14_02_2026-00-33.ckpt'
+  vqvae_autoencoder_ckpt_name: './checkpoints/vqvae/last.ckpt'
+  vqvae_discriminator_ckpt_name: './checkpoints/discriminator/last.ckpt'

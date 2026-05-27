@@ -1,0 +1,34 @@
+# checkpoints and outputs
+checkpoints/
+sample_outputs/
+wandb/
+lightning_logs/
+logs/
+outputs/
+results/
+
+# data
+data/
+dataset/data/
+*.npy
+*.npz
+*.nii
+*.nii.gz
+*.h5
+*.hdf5
+
+# model weights
+*.pt
+*.pth
+*.ckpt
+
+# environment
+diff_env/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# system
+.DS_Store
