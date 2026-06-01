@@ -32,3 +32,5 @@ __pycache__/
 
 # system
 .DS_Store
+fm_training_dose copy.py
+ldm_training_dose copy.py
